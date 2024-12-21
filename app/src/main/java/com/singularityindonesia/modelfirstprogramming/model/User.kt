@@ -22,32 +22,23 @@ class User private constructor(
 ) : AutomatedInstance by AutomatedInstanceImpl(
     coroutine,
     Companion::destroy,
-    Companion::cancelDestroy
 ) {
     companion object {
         private var instance: User? = null
         private var destructionJob: Job? = null
         fun get(): User {
-            cancelDestroy()
             return instance ?: User().also { instance = it }
         }
 
         private fun destroy() {
-            cancelDestroy()
-            destructionJob = instance?.coroutine?.launch {
-                instance = null
-            }
-        }
-
-        private fun cancelDestroy() {
-            destructionJob?.cancel()
+            instance = null
         }
     }
 
     private val _isSynchronizing = MutableStateFlow(false)
     val isSynchronizing = _isSynchronizing.automateShare(_isSynchronizing.value)
 
-    suspend fun sync(): Result<Unit> = withContext(coroutine.coroutineContext){
+    suspend fun sync(): Result<Unit> = withContext(coroutine.coroutineContext) {
         _isSynchronizing.update { true }
         runCatching {
             val json = webApi.fetchUser().map { it.jsonObject }.getOrElse { throw it }
@@ -60,7 +51,7 @@ class User private constructor(
     private val _name = MutableStateFlow(Name(""))
     val name: StateFlow<Name> = _name.automateShare(default = _name.value)
 
-    suspend fun updateUserName(name: Name): Result<Name> = withContext(coroutine.coroutineContext){
+    suspend fun updateUserName(name: Name): Result<Name> = withContext(coroutine.coroutineContext) {
         webApi.updateUserName(name).onSuccess { _name.update { name } }
     }
 
