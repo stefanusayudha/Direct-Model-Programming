@@ -25,7 +25,6 @@ class User private constructor(
 ) {
     companion object {
         private var instance: User? = null
-        private var destructionJob: Job? = null
         fun get(): User {
             return instance ?: User().also { instance = it }
         }
