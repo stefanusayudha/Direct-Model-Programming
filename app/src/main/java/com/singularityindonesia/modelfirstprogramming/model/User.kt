@@ -4,6 +4,7 @@ import com.singularityindonesia.modelfirstprogramming.core.tools.AutomatedInstan
 import com.singularityindonesia.modelfirstprogramming.core.tools.AutomatedInstanceImpl
 import com.singularityindonesia.modelfirstprogramming.core.tools.automateShare
 import com.singularityindonesia.modelfirstprogramming.model.source.UserWebApi
+import com.singularityindonesia.modelfirstprogramming.model.source.UserWebApiImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -11,11 +12,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 class User private constructor(
     override val coroutine: CoroutineScope = CoroutineScope(Dispatchers.IO),
-    private val webApi: UserWebApi = UserWebApi(),
+    private val webApi: UserWebApi = UserWebApiImpl(),
 ) : AutomatedInstance by AutomatedInstanceImpl(
     coroutine,
     Companion::destroy,
@@ -41,24 +43,30 @@ class User private constructor(
         }
     }
 
-    private val _name = MutableStateFlow(Name(""))
-    val name: StateFlow<Name> = _name
-        .automateShare(
-            default = _name.value,
-            onStart = { fetchUserName() }
-        )
+    private val _isSynchronizing = MutableStateFlow(false)
+    val isSynchronizing = _isSynchronizing.automateShare(_isSynchronizing.value)
 
-    private fun fetchUserName() {
-        coroutine.launch {
-            _name.update { Name("...") }
-            val result = webApi.getUserName().getOrElse { "Error" }
-            _name.update { Name(result) }
+    suspend fun sync(): Result<Unit> {
+        _isSynchronizing.update { true }
+        return runCatching {
+            val json = webApi.fetchUser().map { it.jsonObject }.getOrElse { throw it }
+            val name = json["name"]?.jsonPrimitive?.content.orEmpty()
+            _name.update { Name(name) }
+            _isSynchronizing.update { false }
         }
     }
 
-    suspend fun updateName(name: Name): Result<Name> = withContext(coroutine.coroutineContext) {
-        webApi.updateUserName(name.value)
-            .map { Name(it) }
-            .onSuccess { newName -> _name.update { newName } }
+    private val _name = MutableStateFlow(Name(""))
+    val name: StateFlow<Name> = _name.automateShare(default = _name.value)
+
+    suspend fun updateUserName(name: Name): Result<Name> {
+        return webApi.updateUserName(name).onSuccess { _name.update { name } }
+    }
+
+    init {
+        coroutine.launch {
+            // retry twice then give up
+            sync().onFailure { sync() }
+        }
     }
 }

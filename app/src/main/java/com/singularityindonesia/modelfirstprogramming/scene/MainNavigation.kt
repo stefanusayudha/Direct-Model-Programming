@@ -14,7 +14,8 @@ import com.singularityindonesia.modelfirstprogramming.scene.profile.ProfileScene
 @Composable
 fun MainNavigation(
     modifier: Modifier = Modifier,
-    onNavigate: (PageTitle) -> Unit
+    onNavigate: (PageTitle) -> Unit,
+    onLoading: (Boolean) -> Unit,
 ) {
     val controller = rememberNavController()
     NavHost(
@@ -29,7 +30,8 @@ fun MainNavigation(
             HomeScenePane(
                 gotoProfile = {
                     controller.navigate("profile")
-                }
+                },
+                onLoading = onLoading
             )
         }
 
@@ -43,7 +45,8 @@ fun MainNavigation(
                 },
                 gotoEditProfile = {
                     controller.navigate("profile/edit")
-                }
+                },
+                onLoading = onLoading
             )
         }
 
@@ -52,7 +55,8 @@ fun MainNavigation(
                 onNavigate.invoke(PageTitle("Edit Profile"))
             }
             EditProfilePane(
-                navigateBack = { controller.popBackStack() }
+                navigateBack = { controller.popBackStack() },
+                onLoading = onLoading
             )
         }
     }

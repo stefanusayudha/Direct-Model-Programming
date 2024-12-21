@@ -10,10 +10,12 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,12 +28,14 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.singularityindonesia.modelfirstprogramming.core.component.LinearProgress
 import com.singularityindonesia.modelfirstprogramming.model.Name
 import com.singularityindonesia.modelfirstprogramming.model.User
 import kotlinx.coroutines.launch
 
 @Composable
 fun EditProfilePane(
+    onLoading: (isLoading: Boolean) -> Unit,
     navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -41,7 +45,12 @@ fun EditProfilePane(
     val userName by user.name.collectAsStateWithLifecycle()
 
     var editedName by remember(userName) { mutableStateOf(userName.value) }
+    val userIsSynchronizing by user.isSynchronizing.collectAsStateWithLifecycle()
     var editUserNameIsLoading by remember { mutableStateOf(false) }
+
+    LaunchedEffect(userIsSynchronizing) {
+        onLoading.invoke(userIsSynchronizing)
+    }
 
     Column(
         modifier = Modifier.padding(16.dp),
@@ -79,7 +88,7 @@ fun EditProfilePane(
                 onClick = {
                     scope.launch {
                         editUserNameIsLoading = true
-                        user.updateName(Name(editedName))
+                        user.updateUserName(Name(editedName))
                             .onSuccess {
                                 Toast.makeText(context, "Update success", Toast.LENGTH_SHORT).show()
                                 navigateBack.invoke()

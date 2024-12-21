@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -22,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.singularityindonesia.modelfirstprogramming.core.component.LinearProgress
 import com.singularityindonesia.modelfirstprogramming.core.theme.ModelFirstProgrammingTheme
 import com.singularityindonesia.modelfirstprogramming.model.PageTitle
 import com.singularityindonesia.modelfirstprogramming.scene.MainNavigation
@@ -33,24 +36,34 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             var pageTitle by remember { mutableStateOf(PageTitle("Home")) }
+            var showLoadingIndicator by remember { mutableStateOf(false) }
             ModelFirstProgrammingTheme {
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize(),
                     topBar = {
-                        TopAppBar(
-                            title = {
-                                Text(
-                                    text = pageTitle.value,
+                        Box {
+                            TopAppBar(
+                                title = {
+                                    Text(
+                                        text = pageTitle.value,
+                                    )
+                                }
+                            )
+                            if (showLoadingIndicator)
+                                LinearProgress(
+                                    modifier = Modifier.statusBarsPadding()
                                 )
-                            }
-                        )
+                        }
                     }
                 ) { innerPadding ->
                     MainNavigation(
                         modifier = Modifier.padding(innerPadding),
                         onNavigate = {
                             pageTitle = it
+                        },
+                        onLoading = {
+                            showLoadingIndicator = it
                         }
                     )
                 }
