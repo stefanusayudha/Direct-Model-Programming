@@ -48,6 +48,9 @@ fun MainNavigation(
         }
 
         composable(route = "profile/edit") {
+            LaunchedEffect(Unit) {
+                onNavigate.invoke(PageTitle("Edit Profile"))
+            }
             EditProfilePane(
                 navigateBack = { controller.popBackStack() }
             )
