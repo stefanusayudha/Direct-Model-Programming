@@ -24,6 +24,6 @@ However, I understand that in more complex systems, abstraction layers are neces
 
 # Preview
 <div>
-  <img src="https://miro.medium.com/v2/resize:fit:1248/format:webp/1*j5iI8nI6oO01RLUg_nPseQ.gif" alt="An animated GIF" height="300">
-  <img src="https://cdn-images-1.medium.com/v2/resize:fit:1600/1*E8A88W-4MRqu7sIOJmpdwA.jpeg" alt="An animated GIF" height="300">
+  <img src="https://miro.medium.com/v2/resize:fit:1248/format:webp/1*j5iI8nI6oO01RLUg_nPseQ.gif" alt="An animated GIF" height="500">
+  <img src="https://cdn-images-1.medium.com/v2/resize:fit:1600/1*E8A88W-4MRqu7sIOJmpdwA.jpeg" alt="An animated GIF" height="500">
 </div>
