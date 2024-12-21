@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
@@ -46,9 +47,9 @@ class User private constructor(
     private val _isSynchronizing = MutableStateFlow(false)
     val isSynchronizing = _isSynchronizing.automateShare(_isSynchronizing.value)
 
-    suspend fun sync(): Result<Unit> {
+    suspend fun sync(): Result<Unit> = withContext(coroutine.coroutineContext){
         _isSynchronizing.update { true }
-        return runCatching {
+        runCatching {
             val json = webApi.fetchUser().map { it.jsonObject }.getOrElse { throw it }
             val name = json["name"]?.jsonPrimitive?.content.orEmpty()
             _name.update { Name(name) }
@@ -59,8 +60,8 @@ class User private constructor(
     private val _name = MutableStateFlow(Name(""))
     val name: StateFlow<Name> = _name.automateShare(default = _name.value)
 
-    suspend fun updateUserName(name: Name): Result<Name> {
-        return webApi.updateUserName(name).onSuccess { _name.update { name } }
+    suspend fun updateUserName(name: Name): Result<Name> = withContext(coroutine.coroutineContext){
+        webApi.updateUserName(name).onSuccess { _name.update { name } }
     }
 
     init {
