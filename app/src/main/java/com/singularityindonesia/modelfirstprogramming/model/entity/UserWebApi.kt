@@ -1,0 +1,19 @@
+package com.singularityindonesia.modelfirstprogramming.model.entity
+
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
+
+class UserWebApi {
+    private var userName = "User"
+
+    suspend fun getUserName(): Result<String> {
+        delay(5.seconds)
+        return runCatching { userName }
+    }
+
+    suspend fun updateUserName(name: String): Result<String> {
+        delay(2.seconds)
+        userName = name
+        return runCatching { userName }
+    }
+}
