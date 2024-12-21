@@ -1,13 +1,11 @@
 package com.singularityindonesia.modelfirstprogramming.scene.editprofile
 
-import android.widget.Space
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -29,7 +27,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.singularityindonesia.modelfirstprogramming.model.Name
-import com.singularityindonesia.modelfirstprogramming.model.entity.User
+import com.singularityindonesia.modelfirstprogramming.model.User
 import kotlinx.coroutines.launch
 
 @Composable

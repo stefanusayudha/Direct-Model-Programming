@@ -1,4 +1,4 @@
-package com.singularityindonesia.modelfirstprogramming.model.entity
+package com.singularityindonesia.modelfirstprogramming.model
 
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds

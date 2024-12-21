@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.singularityindonesia.modelfirstprogramming.model.entity.User
+import com.singularityindonesia.modelfirstprogramming.model.User
 
 @Composable
 fun HomeScenePane(

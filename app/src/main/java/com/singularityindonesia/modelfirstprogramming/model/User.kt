@@ -1,9 +1,8 @@
-package com.singularityindonesia.modelfirstprogramming.model.entity
+package com.singularityindonesia.modelfirstprogramming.model
 
 import com.singularityindonesia.modelfirstprogramming.core.tools.AutomatedInstance
 import com.singularityindonesia.modelfirstprogramming.core.tools.AutomatedInstanceImpl
 import com.singularityindonesia.modelfirstprogramming.core.tools.automateShare
-import com.singularityindonesia.modelfirstprogramming.model.Name
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -18,8 +17,8 @@ class User private constructor(
     private val webApi: UserWebApi = UserWebApi(),
 ) : AutomatedInstance by AutomatedInstanceImpl(
     coroutine,
-    ::destroy,
-    ::cancelDestroy
+    Companion::destroy,
+    Companion::cancelDestroy
 ) {
     companion object {
         private var instance: User? = null
