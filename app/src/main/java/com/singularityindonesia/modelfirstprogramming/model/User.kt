@@ -3,6 +3,7 @@ package com.singularityindonesia.modelfirstprogramming.model
 import com.singularityindonesia.modelfirstprogramming.core.tools.AutomatedInstance
 import com.singularityindonesia.modelfirstprogramming.core.tools.AutomatedInstanceImpl
 import com.singularityindonesia.modelfirstprogramming.core.tools.automateShare
+import com.singularityindonesia.modelfirstprogramming.model.source.UserWebApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
