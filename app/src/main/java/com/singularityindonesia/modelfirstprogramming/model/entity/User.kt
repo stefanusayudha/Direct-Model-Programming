@@ -26,10 +26,7 @@ class User private constructor(
         private var destructionJob: Job? = null
         fun get(): User {
             cancelDestroy()
-            return instance
-                ?: User().also {
-                    instance = it
-                }
+            return instance ?: User().also { instance = it }
         }
 
         private fun destroy() {
