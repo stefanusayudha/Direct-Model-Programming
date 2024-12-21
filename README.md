@@ -22,4 +22,4 @@ I am creating this project to try and re-evaluate the Direct Model programming a
 However, I understand that in more complex systems, abstraction layers are necessary to manage dependencies, improve scalability, and maintain flexibility. In this experiment, I want to explore how Direct Modeling can address those challenges.
 
 # Preview
-![](https://miro.medium.com/v2/resize:fit:1248/format:webp/1*j5iI8nI6oO01RLUg_nPseQ.gif)
+<img src="https://miro.medium.com/v2/resize:fit:1248/format:webp/1*j5iI8nI6oO01RLUg_nPseQ.gif" alt="An animated GIF" height="300">
