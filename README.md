@@ -18,7 +18,7 @@ I am creating this project to try and re-evaluate the Direct Model programming a
 - **Modeling** is an approach to understanding, designing, and representing systems using **models**. A model is an abstract representation of reality used to explain or simulate how a system works.
 - A model is an artificial object created with behavior, purpose, and characteristics.
 - A model is not merely a **Record of Values**, but rather the entire mechanism, attributes, and properties.
-- Theoretically - With this paradigm, you don't need to worry about: Reloading, Synchronization, Caching, or dealing with instances type such singletons or factories, because each object is representing realtime state and each interaction is an interaction with true Object.
+- Theoretically - With this paradigm, you don't need to worry about: **Reloading**, **Synchronization**, **Caching**, or dealing with instances type such **singletons** or **factories**, because each object is representing realtime state and each interaction is an interaction with **true Object**.
 
 However, I understand that in more complex systems, abstraction layers are necessary to manage dependencies, improve scalability, and maintain flexibility. In this experiment, I want to explore how Direct Modeling can address those challenges.
 
