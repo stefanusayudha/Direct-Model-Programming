@@ -28,3 +28,54 @@ However, I understand that in more complex systems, abstraction layers are neces
   <img src="https://cdn-images-1.medium.com/v2/resize:fit:1600/1*E8A88W-4MRqu7sIOJmpdwA.jpeg" alt="An animated GIF" height="500">
 </div>
 
+All that cost only these lines of codes:
+```kotlin
+class User private constructor(
+    override val coroutine: CoroutineScope = CoroutineScope(Dispatchers.IO),
+    private val webApi: UserWebApi = UserWebApiImpl(),
+) : AutomatedInstance by AutomatedInstanceImpl(
+    coroutine,
+    Companion::destroy,
+) {
+    companion object {
+        private var instance: User? = null
+        private var destructionJob: Job? = null
+        fun get(): User {
+            return instance ?: User().also { instance = it }
+        }
+
+        private fun destroy() {
+            instance = null
+        }
+    }
+
+    private val _isSynchronizing = MutableStateFlow(false)
+    val isSynchronizing = _isSynchronizing.automateShare(_isSynchronizing.value)
+
+    suspend fun sync(): Result<Unit> = withContext(coroutine.coroutineContext){
+        _isSynchronizing.update { true }
+        runCatching {
+            val json = webApi.fetchUser().map { it.jsonObject }.getOrElse { throw it }
+            val name = json["name"]?.jsonPrimitive?.content.orEmpty()
+            _name.update { Name(name) }
+            _isSynchronizing.update { false }
+        }
+    }
+
+    private val _name = MutableStateFlow(Name(""))
+    val name: StateFlow<Name> = _name.automateShare(default = _name.value)
+
+    suspend fun updateUserName(name: Name): Result<Name> = withContext(coroutine.coroutineContext){
+        webApi.updateUserName(name).onSuccess { _name.update { name } }
+    }
+
+    init {
+        coroutine.launch {
+            // retry twice then give up
+            sync().onFailure { sync() }
+        }
+    }
+}
+
+```
+
