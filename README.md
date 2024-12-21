@@ -18,3 +18,5 @@ I am creating this project to try and re-evaluate the Direct Model programming a
 - **Modeling** is an approach to understanding, designing, and representing systems using **models**. A model is an abstract representation of reality used to explain or simulate how a system works.
 - A model is an artificial object created with behavior, purpose, and characteristics.
 - A model is not merely a **Record of Values**, but rather the entire mechanism, attributes, and properties.
+
+However, I understand that in more complex systems, abstraction layers are necessary to manage dependencies, improve scalability, and maintain flexibility. In this experiment, I want to explore how Direct Modeling can address those challenges.
