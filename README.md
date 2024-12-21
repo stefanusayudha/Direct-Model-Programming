@@ -15,6 +15,7 @@ Because of this, I want to revisit a fundamental concept in programming: **Model
 I am creating this project to try and re-evaluate the Direct Model programming approach in the Kotlin language.
 
 # Theory
+![](https://cdn-images-1.medium.com/v2/resize:fit:1600/1*E8A88W-4MRqu7sIOJmpdwA.jpeg)
 - **Modeling** is an approach to understanding, designing, and representing systems using **models**. A model is an abstract representation of reality used to explain or simulate how a system works.
 - A model is an artificial object created with behavior, purpose, and characteristics.
 - A model is not merely a **Record of Values**, but rather the entire mechanism, attributes, and properties.
@@ -23,12 +24,9 @@ I am creating this project to try and re-evaluate the Direct Model programming a
 However, I understand that in more complex systems, abstraction layers are necessary to manage dependencies, improve scalability, and maintain flexibility. In this experiment, I want to explore how Direct Modeling can address those challenges.
 
 # Preview
-<div>
-  <img src="https://miro.medium.com/v2/resize:fit:1236/format:webp/1*qslp2Jl4G-raxuc2yUNc2Q.gif" alt="An animated GIF" height="500">
-  <img src="https://cdn-images-1.medium.com/v2/resize:fit:1600/1*E8A88W-4MRqu7sIOJmpdwA.jpeg" alt="An animated GIF" height="500">
-</div>
-
+<img src="https://miro.medium.com/v2/resize:fit:1236/format:webp/1*qslp2Jl4G-raxuc2yUNc2Q.gif" alt="An animated GIF" height="400">
 All that cost only these lines of codes:
+
 ```kotlin
 class User private constructor(
     override val coroutine: CoroutineScope = CoroutineScope(Dispatchers.IO),
@@ -77,4 +75,3 @@ class User private constructor(
 }
 
 ```
-
