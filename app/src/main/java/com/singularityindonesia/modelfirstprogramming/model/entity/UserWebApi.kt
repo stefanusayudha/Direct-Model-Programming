@@ -12,7 +12,7 @@ class UserWebApi {
     }
 
     suspend fun updateUserName(name: String): Result<String> {
-        delay(2.seconds)
+        delay(5.seconds)
         userName = name
         return runCatching { userName }
     }

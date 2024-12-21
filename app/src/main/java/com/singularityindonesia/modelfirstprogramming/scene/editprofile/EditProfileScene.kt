@@ -2,6 +2,7 @@ package com.singularityindonesia.modelfirstprogramming.scene.editprofile
 
 import android.widget.Space
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -45,10 +46,12 @@ fun EditProfilePane(
     var editUserNameIsLoading by remember { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         TextField(
             modifier = Modifier.fillMaxWidth(),
+            label = { Text("User Name") },
             value = editedName,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
@@ -59,6 +62,11 @@ fun EditProfilePane(
             onValueChange = {
                 editedName = it
             }
+        )
+        Text(
+            text = "Note: We are emulating 5 second delay, you don't need to wait until the process returns success, because everything is syncronized.",
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.primary
         )
 
         Spacer(modifier = Modifier.weight(1f))
