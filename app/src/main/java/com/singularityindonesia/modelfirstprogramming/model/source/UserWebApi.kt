@@ -4,6 +4,7 @@ import com.singularityindonesia.modelfirstprogramming.model.Name
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlin.time.Duration.Companion.seconds
@@ -28,8 +29,11 @@ class UserWebApiImpl : UserWebApi {
     }
 
     override suspend fun updateUserName(name: Name): Result<Name> {
+        delay(5.seconds)
         user = user.jsonObject.toMutableMap()
-            .apply { set("name", Json.parseToJsonElement(name.value)) }
+            .apply {
+                this["name"] = JsonPrimitive(name.value)
+            }
             .let { Json.encodeToJsonElement(it) }
 
         return Result.success(name)
