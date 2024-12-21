@@ -1,10 +1,14 @@
 package com.singularityindonesia.modelfirstprogramming.model
 
-class Name(val value: String)
 
-class FullName(val value: String)
+@JvmInline
+value class Name(val value: String)
 
-class Title(val value: String)
+@JvmInline
+value class FullName(val value: String)
+
+@JvmInline
+value class Title(val value: String)
 
 typealias PageTitle = Title
 
