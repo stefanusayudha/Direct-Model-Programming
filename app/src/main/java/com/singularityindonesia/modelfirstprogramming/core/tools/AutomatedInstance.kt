@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.onSubscription
@@ -28,10 +29,12 @@ class AutomatedInstanceImpl(
 }
 
 context(AutomatedInstance)
-inline fun <reified T> MutableStateFlow<T>.automateShare(
+inline fun <reified T, R> MutableStateFlow<T>.automateShare(
     default: T,
+    @Suppress("UNCHECKED_CAST")
+    noinline map: (T) -> R = { it as R },
     noinline onStart: () -> Unit = {}
-): StateFlow<T> = this
+): StateFlow<R> = this
     .onSubscription {
         this@AutomatedInstance.subscribedParameters.update {
             it.takeIf { it.contains(T::class) } ?: (it + T::class)
@@ -45,9 +48,10 @@ inline fun <reified T> MutableStateFlow<T>.automateShare(
             this@AutomatedInstance.destroyInstance()
 
     }
+    .map { map(it) }
     .onStart { onStart.invoke() }
     .stateIn(
         this@AutomatedInstance.coroutine,
         SharingStarted.WhileSubscribed(INSTANCE_CACHING_DURATION.inWholeMilliseconds),
-        default
+        map(default)
     )

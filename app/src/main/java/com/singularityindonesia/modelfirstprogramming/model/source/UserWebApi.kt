@@ -10,7 +10,7 @@ import kotlinx.serialization.json.jsonObject
 import kotlin.time.Duration.Companion.seconds
 
 interface UserWebApi {
-    suspend fun fetchUser(): Result<JsonElement>
+    suspend fun fetchUser(): Result<String>
     suspend fun updateUserName(name: Name): Result<Name>
 }
 
@@ -20,9 +20,9 @@ class UserWebApiImpl : UserWebApi {
         {
             "name": "User"
         }
-    """.let { Json.parseToJsonElement(it) }
+    """.trimIndent()
 
-    override suspend fun fetchUser(): Result<JsonElement> {
+    override suspend fun fetchUser(): Result<String> {
         delay(5.seconds)
         // dummy
         return Result.success(user)
@@ -30,11 +30,12 @@ class UserWebApiImpl : UserWebApi {
 
     override suspend fun updateUserName(name: Name): Result<Name> {
         delay(5.seconds)
-        user = user.jsonObject.toMutableMap()
+        user = user.let { Json.parseToJsonElement(user).jsonObject }.toMutableMap()
             .apply {
                 this["name"] = JsonPrimitive(name.value)
             }
             .let { Json.encodeToJsonElement(it) }
+            .toString()
 
         return Result.success(name)
     }
