@@ -15,13 +15,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.singularityindonesia.modelfirstprogramming.core.component.LinearProgress
 import com.singularityindonesia.modelfirstprogramming.model.User
 
 @Composable
 fun ProfileScenePane(
     onLoading: (isLoading: Boolean) -> Unit,
-    navigateBack: () -> Unit,
     gotoEditProfile: () -> Unit,
 ) {
     val user = remember { User.get() }
@@ -40,14 +38,9 @@ fun ProfileScenePane(
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            OutlinedButton(
-                modifier = Modifier.weight(1f),
-                onClick = navigateBack
-            ) {
-                Text("Go Back")
-            }
+            Spacer(modifier = Modifier.weight(1f))
             Button(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier,
                 onClick = gotoEditProfile
             ) {
                 Text("Go To Edit Profile")

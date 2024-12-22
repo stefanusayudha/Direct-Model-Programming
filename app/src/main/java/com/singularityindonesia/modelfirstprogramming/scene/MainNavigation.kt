@@ -1,7 +1,7 @@
 package com.singularityindonesia.modelfirstprogramming.scene
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,6 +16,7 @@ fun MainNavigation(
     modifier: Modifier = Modifier,
     onNavigate: (PageTitle) -> Unit,
     onLoading: (Boolean) -> Unit,
+    setBackAction: ((() -> Unit)?) -> Unit
 ) {
     val controller = rememberNavController()
     NavHost(
@@ -24,8 +25,10 @@ fun MainNavigation(
         startDestination = "home"
     ) {
         composable(route = "home") {
-            LaunchedEffect(Unit) {
+            DisposableEffect(Unit) {
                 onNavigate.invoke(PageTitle("Home"))
+                setBackAction.invoke(null)
+                onDispose { }
             }
             HomeScenePane(
                 gotoProfile = {
@@ -36,13 +39,14 @@ fun MainNavigation(
         }
 
         composable(route = "profile") {
-            LaunchedEffect(Unit) {
+            DisposableEffect(Unit) {
                 onNavigate.invoke(PageTitle("Profile"))
+                setBackAction.invoke {
+                    controller.popBackStack()
+                }
+                onDispose { }
             }
             ProfileScenePane(
-                navigateBack = {
-                    controller.popBackStack()
-                },
                 gotoEditProfile = {
                     controller.navigate("profile/edit")
                 },
@@ -51,8 +55,12 @@ fun MainNavigation(
         }
 
         composable(route = "profile/edit") {
-            LaunchedEffect(Unit) {
+            DisposableEffect(Unit) {
                 onNavigate.invoke(PageTitle("Edit Profile"))
+                setBackAction.invoke {
+                    controller.popBackStack()
+                }
+                onDispose { }
             }
             EditProfilePane(
                 navigateBack = { controller.popBackStack() },
